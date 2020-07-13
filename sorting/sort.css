@@ -1,0 +1,10 @@
+.cell{
+    border:1px solid #DEDEDE;
+    position: fixed;
+    background-color: snow;
+    border-radius: 10px;
+}
+
+.cell:hover{
+    background: #e0e0e0;
+}
