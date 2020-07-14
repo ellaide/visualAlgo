@@ -1,33 +1,37 @@
 Vue.component("cell-component", {
-    props: ['position', 'dragging', 'x', 'y'],
+    props: ['position', 'dragging', 'x', 'y', 'hcells', 'vcells'],
     data: function(){
         return {color : null}
     },
     computed: {
         cellSize: function(){
-            return window.innerWidth / 30;
+            return window.innerWidth / this.hcells;
         },
         posX: function(){
-            return this.cellSize * ( this.position % 30 )
+            return this.cellSize * ( this.position % this.hcells )
         },
         posY: function(){
-            return this.cellSize * Math.floor((this.position / 30))
+            return this.cellSize * Math.floor((this.position / this.hcells))
         }
     },
     watch: {
         x: function(val){
             if (this.dragging){
-                if ((Math.floor(val / this.cellSize) == this.position % 30) && (Math.floor(this.y / this.cellSize) == Math.floor(this.position/ 30))){
+                if ((Math.floor(val / this.cellSize) == this.position % this.hcells) && (Math.floor(this.y / this.cellSize) == Math.floor(this.position/ this.hcells))){
                     this.color = "red"
                 }
             }
         },
         y: function(val){
             if (this.dragging){
-                if ((Math.floor(this.x / this.cellSize) == this.position % 30) && (Math.floor(val / this.cellSize) == Math.floor(this.position/ 30))){
+                if ((Math.floor(this.x / this.cellSize) == this.position % this.hcells) && (Math.floor(val / this.cellSize) == Math.floor(this.position/ this.hcells))){
                     this.color = "red"
                 }
             }
+        },
+        color: function(val){
+            this.$emit('color-change', this.position)
+            console.log("color change " + this.position)
         }
         
     },
@@ -54,7 +58,16 @@ new Vue({
     },
     computed: {
         cellSize: function(){
-            return window.innerWidth / 30;
+            return window.innerWidth / horizontalCells;
+        },
+        horizontalCells: function(){
+            return 20
+        },
+        verticalCells: function(){
+            return Math.floor(window.innerHeight * this.horizontalCells / window.innerWidth)
+        },
+        arr: function(){
+            return new Array(this.horizontalCells).fill(0)
         }
     },
     methods: {
@@ -75,6 +88,15 @@ new Vue({
                 this.y = event.clientY
             
             }
+        },
+
+        getArray(){
+            console.log(this.arr)
+        },
+
+        incArray: function(position){
+
+            this.arr[position % this.horizontalCells]++;
         }
     },
     mounted(){

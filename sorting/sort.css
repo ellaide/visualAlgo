@@ -8,3 +8,8 @@
 .cell:hover{
     background: #e0e0e0;
 }
+
+.run{
+    position: absolute;
+    z-index: 10;
+}
