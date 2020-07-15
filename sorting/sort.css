@@ -13,3 +13,12 @@
     position: absolute;
     z-index: 10;
 }
+
+.smooth-transition-enter-active, .smooth-transition-leave-active {
+    transition: all 10s;
+    transition-timing-function: ease;
+}
+.smooth-transition-enter, .smooth-transition-leave-to{
+    color: snow;
+    
+}
