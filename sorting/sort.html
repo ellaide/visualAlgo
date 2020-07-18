@@ -11,19 +11,32 @@
     <body>
         <div id="app" @mousedown="startDrag" @mousemove="doDrag">
             <cell-component 
-            v-for="n in verticalCells * horizontalCells"
-            v-bind:position="n-1"
-            v-bind:key="n-1" 
-            v-bind:x="x"
-            v-bind:y="y"
-            v-bind:dragging="dragging"
-            v-bind:hcells="horizontalCells"
-            v-bind:vcells="verticalCells"
-            v-bind:disappear="disappear"
-            v-on:color-change="incArray"
-            :ref="'cell-'+n"
+                v-for="n in verticalCells * horizontalCells"
+                v-bind:position="n-1"
+                v-bind:key="n-1" 
+                v-bind:x="x"
+                v-bind:y="y"
+                v-bind:dragging="dragging"
+                v-bind:hcells="horizontalCells"
+                v-bind:vcells="verticalCells"
+                v-bind:disappear="disappear"
+                v-on:color-change="incArray"
+                :ref="'cell-'+n"
             ></cell-component>
+
             <button class="run" v-on:click="getArray">Run</button>
+            
+            <column-component
+                v-if="appear"
+                v-for="n in arr.length"
+                v-bind:key="n + 1000"
+                v-bind:height="arr[n-1]"
+                v-bind:colnum="n-1"
+                v-bind:vcells="verticalCells"
+                v-bind:hcells="horizontalCells"
+                :ref="'col-' + n"
+            >
+            </column-component>
             
         </div>
         <script src="sort.js"></script>

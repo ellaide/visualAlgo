@@ -1,8 +1,9 @@
 .cell{
     border:1px solid #DEDEDE;
     position: fixed;
-    background-color: snow;
+    background-color: white;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .cell:hover{

@@ -2,7 +2,7 @@ var Color = net.brehaut.Color
 
 
 Vue.component("cell-component", {
-    props: ['position', 'dragging', 'x', 'y', 'hcells', 'vcells', 'disappear'],
+    props: ['position', 'dragging', 'x', 'y', 'hcells', 'vcells', 'disappear','columncolor'],
     data: function(){
         return {color : null, tweenedColor: {
             red: 0,
@@ -59,7 +59,7 @@ Vue.component("cell-component", {
                 }
                 
                 var tween = new TWEEN.Tween(this.tweenedColor)
-                tween.to({red: 1, green: 0.9804, blue: 0.9804, alpha: 1}, 300).start()
+                tween.to({red: 1, green: 1, blue: 1, alpha: 1}, 1500).start()
                 
                 animate()
                 
@@ -76,13 +76,61 @@ Vue.component("cell-component", {
         
     },
     template: `
-    <div class="cell" v-bind:style="{'background-color': color, left: posX + 'px', top: posY + 'px', width: cellSize + 'px', height: cellSize + 'px'}"></div>
+    <div class="cell" v-bind:style="{'background-color': (columncolor ? columncolor : color), left: posX + 'px', top: posY + 'px', width: cellSize + 'px', height: cellSize + 'px'}"></div>
     `
 })
 
 
 
+Vue.component("column-component", {
+    props: ['height', 'colnum', 'vcells', 'hcells'],
+    data: function(){
+        return {color: null, iscolcaller: true, tweenedColor: {red:1, green: 1, blue: 1, alpha: 1}, signal: false}
+    },
+    computed: {
+        startPos: function(){
+            this.signal = true
+            return this.hcells * this.vcells - this.hcells + this.colnum
+        },
+        inc: function(){
+            return this.hcells
+        },
+        testColor: function(){
+            
+            return new Color({red:this.tweenedColor.red, green:this.tweenedColor.green, blue:this.tweenedColor.blue, alpha:this.tweenedColor.alpha}).toCSS()
+        }
 
+    },
+    watch: {
+        signal: function(){
+            function animate() {
+                if (TWEEN.update()){
+                    
+                    requestAnimationFrame(animate)
+                }
+            }
+            
+            var tween = new TWEEN.Tween(this.tweenedColor)
+            tween.to({red: 0, green: 0, blue: 0, alpha: 1}, 1500).start()
+            
+            animate()
+        },
+
+        testColor: function() {
+            this.color = this.testColor
+        }
+    },
+    template: `
+    <div>
+    <cell-component v-for="n in height" :position="startPos-(n-1)*inc" dragging="false" x="-1" y="-1" :hcells="hcells" :vcells="vcells" disappear="false" :columncolor="color">
+    </cell-component>
+    </div>
+    `
+
+
+
+    
+})
 
 
 new Vue({
@@ -91,7 +139,8 @@ new Vue({
         x: 0,
         y: 0,
         dragging: false,
-        disappear: false
+        disappear: false,
+        appear: false
     },
     computed: {
         cellSize: function(){
@@ -130,11 +179,14 @@ new Vue({
         getArray(){
             console.log(this.arr)
             this.disappear = true
+
+            setTimeout(() => {
+                this.appear = true
+            }, 2000)
             
         },
 
         incArray: function(position){
-
             this.arr[position % this.horizontalCells]++;
         }
     },
