@@ -5,3 +5,5 @@ Website with cool visualizations (soon). Sorting, DFS, BFS, and LeetCode problem
 * Front-end framework: **Vue.js**
 
 * Back-end framework: **TBD(Flask, Spring, Node.js)**
+
+* Dependencies: TWEEN.js, Color.js
