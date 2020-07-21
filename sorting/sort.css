@@ -11,15 +11,23 @@
 }
 
 .run{
-    position: absolute;
+    position: fixed;
     z-index: 10;
+    left: 10px;
+    top: 755px;
 }
-
-.smooth-transition-enter-active, .smooth-transition-leave-active {
-    transition: all 10s;
-    transition-timing-function: ease;
+.move{
+    position: fixed;
+    z-index: 40;
+    left: 10px;
+    top: 755px;
 }
-.smooth-transition-enter, .smooth-transition-leave-to{
-    color: snow;
-    
+.move1{
+    position: fixed;
+    z-index: 40;
+    left: 70px;
+    top: 755px;
 }
+.go-move {
+    transition: transform 1s;
+  }

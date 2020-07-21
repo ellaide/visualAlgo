@@ -83,7 +83,7 @@ Vue.component("cell-component", {
 
 
 Vue.component("column-component", {
-    props: ['height', 'colnum', 'vcells', 'hcells'],
+    props: ['height', 'colnum','vcells', 'hcells'],
     data: function(){
         return {color: null, iscolcaller: true, tweenedColor: {red:1, green: 1, blue: 1, alpha: 1}, signal: false}
     },
@@ -118,12 +118,17 @@ Vue.component("column-component", {
 
         testColor: function() {
             this.color = this.testColor
+        },
+        colnum: function(val){
+            console.log(val)
         }
     },
     template: `
     <div>
-    <cell-component v-for="n in height" :position="startPos-(n-1)*inc" dragging="false" x="-1" y="-1" :hcells="hcells" :vcells="vcells" disappear="false" :columncolor="color">
+    <transition-group name="go">
+    <cell-component v-for="n in height" :key="n * height + 10000" :position="startPos-(n-1)*inc" dragging="false" x="-1" y="-1" :hcells="hcells" :vcells="vcells" disappear="false" :columncolor="color">
     </cell-component>
+    </transition-group>
     </div>
     `
 
@@ -133,18 +138,20 @@ Vue.component("column-component", {
 })
 
 
-new Vue({
+var vm = new Vue({
     el: '#app',
     data: {
         x: 0,
         y: 0,
         dragging: false,
         disappear: false,
-        appear: false
+        appear: false,
+        pressed: 0,
+        index: 0
     },
     computed: {
         cellSize: function(){
-            return window.innerWidth / horizontalCells;
+            return window.innerWidth / this.horizontalCells;
         },
         horizontalCells: function(){
             return 20
@@ -154,10 +161,18 @@ new Vue({
         },
         arr: function(){
             return new Array(this.horizontalCells).fill(0)
+        },
+        posArr: function(){
+            res = []
+            for (let i = 0; i < 20; i++){
+                res.push(i)
+            }
+            return res
         }
     },
     methods: {
         startDrag(event){
+            
             this.dragging = true
             this.x = event.clientX
             this.y = event.clientY
@@ -188,6 +203,20 @@ new Vue({
 
         incArray: function(position){
             this.arr[position % this.horizontalCells]++;
+        },
+        move(a, b){
+            this.posArr[a] = b
+        },
+
+        swap(){
+            this.move(3,19)
+            this.$forceUpdate()
+        },
+
+        reSwap(){
+            
+            this.move(3,1)
+            this.$forceUpdate()
         }
     },
     mounted(){

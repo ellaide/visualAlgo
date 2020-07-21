@@ -24,19 +24,23 @@
                 :ref="'cell-'+n"
             ></cell-component>
 
-            <button class="run" v-on:click="getArray">Run</button>
-            
+            <transition-group  v-bind:css="false">
             <column-component
                 v-if="appear"
                 v-for="n in arr.length"
-                v-bind:key="n + 1000"
+                v-bind:key="(n - 1) + 'col'"
                 v-bind:height="arr[n-1]"
-                v-bind:colnum="n-1"
+                v-bind:colnum="posArr[n-1]"
                 v-bind:vcells="verticalCells"
                 v-bind:hcells="horizontalCells"
                 :ref="'col-' + n"
             >
             </column-component>
+            </transition-group>
+
+            <button v-if="!disappear" class="run" v-on:click="getArray">Run</button>
+            <button v-show="appear" class="move" v-on:click.self="swap">swap</button>
+            <button v-show="appear" class="move1" v-on:click.self="reSwap">reswap</button>
             
         </div>
         <script src="sort.js"></script>
