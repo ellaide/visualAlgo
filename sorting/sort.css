@@ -1,33 +1,51 @@
 .cell{
     border:1px solid #DEDEDE;
-    position: fixed;
+    position: absolute;
     background-color: white;
     border-radius: 10px;
     cursor: pointer;
+    
+    z-index: -1;
 }
 
 .cell:hover{
     background: #e0e0e0;
 }
-
+.main{
+    position:relative
+}
 .run{
     position: fixed;
-    z-index: 10;
+    
     left: 10px;
-    top: 755px;
+    top: 715px;
 }
 .move{
     position: fixed;
-    z-index: 40;
+    
     left: 10px;
-    top: 755px;
+    top: 715px;
 }
 .move1{
     position: fixed;
-    z-index: 40;
+    
     left: 70px;
-    top: 755px;
+    top: 715px;
 }
 .go-move {
-    transition: transform 1s;
+    transition: transform 0.5s;
   }
+
+.playground{
+    position:absolute;
+    left:500px;
+    top: 100px;
+    z-index:0;
+}
+.wd{
+    width: 100px;
+    display: block; margin-left: auto; bottom: 0;margin-right: auto;
+}
+.colormoving{
+    color: red;
+}

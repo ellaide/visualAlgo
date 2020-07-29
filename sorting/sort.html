@@ -2,13 +2,23 @@
 <html>
     <head>
         <link rel="stylesheet" href="sort.css">
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+
+        <!-- Add this after vue.js -->
+        <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+        <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/tween.js@16.3.4"></script>
         <script src="https://cdn.jsdelivr.net/npm/color-js@1.0.3"></script>
+
     </head>
 
     <body>
+        <div id="main">
         <div id="app" @mousedown="startDrag" @mousemove="doDrag">
             <cell-component 
                 v-for="n in verticalCells * horizontalCells"
@@ -33,16 +43,46 @@
                 v-bind:colnum="posArr[n-1]"
                 v-bind:vcells="verticalCells"
                 v-bind:hcells="horizontalCells"
+                v-bind:moving="moving"
+                :done="done"
                 :ref="'col-' + n"
             >
             </column-component>
             </transition-group>
-
-            <button v-if="!disappear" class="run" v-on:click="getArray">Run</button>
-            <button v-show="appear" class="move" v-on:click.self="swap">swap</button>
-            <button v-show="appear" class="move1" v-on:click.self="reSwap">reswap</button>
             
         </div>
+        <div style="display: none; max-height:10px;" ref="playground">
+            <b-button pill size="sm" v-b-toggle.collapse-1 variant="light" style="display: block; margin-left: auto; bottom: 0;margin-right: auto;">Playground</b-button>
+            
+            <b-collapse id="collapse-1" v-model="expanded">
+                <b-card>
+                    <b-container fluid>
+                        <br>
+                    <b-form-group label="Array to Sort"  label-align-sm="right" label-cols-sm="8" label-cols-lg="4" description="This array will be constructed on the grid.">
+                        <b-form-input v-model.lazy="array" style="max-width: 500px; display: inline-block;" type="text" placeholder="e.g. 1,2,3,4"></b-form-input>
+                        <b-button size="sm" variant="light" @click="randomize" style="display: inline-block;">Randomize</b-button>
+                    </b-form-group>
+                    <b-form-group label="Sorting speed"  label-align-sm="right" label-cols-sm="8" label-cols-lg="4" description="This is the speed at which sorting will happen.">
+                        <b-form-input v-model="speed" style="max-width: 500px;" type="range" min="1" max="5"></b-form-input>
+                    </b-form-group>
+                    <b-form-group label="Sorting algorithm" label-align-sm="right"  label-cols-sm="8" label-cols-lg="4" description="Sorting method that is going to be used in computation.">
+                        <b-form-select style="max-width: 500px;" v-model="selected" :options="options" class="mb-3">
+                        </b-form-select>
+                    </b-form-group>
+                    <div class="text-center">
+                        <b-button-group>
+                            <b-button  size="sm" :disabled="disappear" variant="primary" v-on:click="getArray">Run</b-button>
+                        </b-button-group>
+                    </div>
+                    <br>
+                    </b-container>
+                </b-card>
+            </b-collapse>
+            
+          </div>
+        </div>
         <script src="sort.js"></script>
+        
+        <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
     </body>
 </html>
