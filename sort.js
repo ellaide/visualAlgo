@@ -46,7 +46,7 @@ Vue.component("cell-component", {
         color: function(val){
             if (val == 'black'){
             this.$emit('color-change', this.position)
-            console.log("color change " + this.position)
+            
             }
         },
         disappear: function(val){
@@ -120,9 +120,6 @@ Vue.component("column-component", {
 
         testColor: function() {
             this.color = this.testColor
-        },
-        colnum: function(val){
-            console.log(val)
         }
     },
     template: `
@@ -152,7 +149,7 @@ var vm = new Vue({
         index: 0,
         expanded: true,
         options: [{value: "insertion", text: "Insertion Sort"}, {value: "selection", text: "Selection Sort"}, {value: "quick", text: "Quick Sort"}],
-        selected: "quick",
+        selected: "insertion",
         array: "",
         pairs: [],
         speed: 1,
@@ -220,7 +217,7 @@ var vm = new Vue({
         async getArray(){
             if (this.array != ''){
                 const strArr = this.array.toString().split(',')
-                console.log(strArr)
+                
                 for (let i = 0; i < this.arr.length; i++){
                     this.arr[i] = 0
                     this.posArr[i] = i
@@ -235,7 +232,7 @@ var vm = new Vue({
                 this.array = strArr.join(",")
                 
             }
-            console.log(this.arr)
+            
             this.disappear = true
 
             setTimeout(() => {
@@ -243,7 +240,7 @@ var vm = new Vue({
             }, 2000)
             this.expanded = false
             this.array = this.arr.join(",")
-            console.log("array:" + this.array)
+            
             axios.get("https://visualalgo-server.herokuapp.com/" + this.selected + "/?array=" + this.array)
             .then(res => {
                 
@@ -323,7 +320,7 @@ var vm = new Vue({
             
         },
         quick(steps){
-            console.log(steps)
+            
             let that = this
             let x = 0
             function action(resolve, step){
@@ -391,15 +388,6 @@ var vm = new Vue({
         }
     },
     watch: {
-        expanded: function(val){
-            console.log(val)
-        },
-        speed: function(val){
-            console.log(val)
-        },
-        sortingSpeedInMs: function(val){
-            console.log(val)
-        },
         done: function(val){
             if (val){
                 this.moreThanOnce = true
