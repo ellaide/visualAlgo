@@ -152,7 +152,7 @@ var vm = new Vue({
         selected: "insertion",
         array: "",
         pairs: [],
-        speed: 1,
+        speed: 3,
         moving: -1,
         done: true,
         moreThanOnce: false,
