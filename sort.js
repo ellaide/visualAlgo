@@ -215,7 +215,7 @@ var vm = new Vue({
         },
 
         async getArray(){
-            if (this.array != ''){
+            if (this.array != '' || this.arr.some(x => x > 0)){
                 const strArr = this.array.toString().split(',')
                 
                 for (let i = 0; i < this.arr.length; i++){
