@@ -1,9 +1,9 @@
 # VisualAlgo
 
-Website with cool visualizations (soon). Sorting, DFS, BFS, and LeetCode problem visualizations.
+Website with cool visualizations. Sorting, DFS, BFS, and LeetCode problem visualizations.
 
 * Front-end framework: **Vue.js**
 
-* Back-end framework: **TBD(Flask, Spring, Node.js)**
+* Back-end framework: **Flask**
 
 * Dependencies: *TWEEN.js*, *Color.js*
