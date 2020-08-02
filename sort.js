@@ -356,7 +356,7 @@ var vm = new Vue({
 
         },
         incrementFromInput: function(pos, val){
-            if (val < 0) val = 0
+            if (val < 0 || isNaN(val)) val = 0
             if (val > this.verticalCells) val = this.verticalCells
             this.arr[pos] += val
         },
