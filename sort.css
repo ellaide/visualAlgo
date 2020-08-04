@@ -49,3 +49,9 @@
 .colormoving{
     color: red;
 }
+.center{
+    display: block;
+    margin-left: auto;
+    bottom: 0;
+    margin-right: auto;
+}
