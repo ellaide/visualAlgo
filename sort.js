@@ -216,7 +216,7 @@ var vm = new Vue({
         },
 
         async getArray(){
-            if (this.array != ''){
+            if (this.array != '' || (this.arr.some(x => x > 0) && !this.isSomethingDrawn)){
                 const strArr = this.array.toString().split(',')
                 
                 for (let i = 0; i < this.arr.length; i++){
@@ -362,6 +362,7 @@ var vm = new Vue({
             this.arr[pos] += val
         },
         incArray: function(position){
+            
             this.arr[position % this.horizontalCells]++;
             this.isSomethingDrawn = true
         },
@@ -381,11 +382,12 @@ var vm = new Vue({
         },
 
         randomize(){
-            let helperArray = []
             for (let i = 0; i < this.arr.length; i++){
-                helperArray.push(Math.floor(Math.random() * this.verticalCells))
+                this.arr[i] = 0
+                this.posArr[i] = i
+                this.incrementFromInput(i, Math.floor(Math.random() * this.verticalCells))
             }
-            this.array = helperArray.join(",")
+            this.array = this.arr.join(",")
         }
     },
     watch: {
