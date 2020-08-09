@@ -229,13 +229,13 @@ var vm = new Vue({
                 for (let i = 0; i < this.arr.length; i++){
                     this.arr[i] = 0
                     this.posArr[i] = i
-                    this.incrementFromInput(i, parseInt(strArr[i]))
                     if (parseInt(strArr[i]) < 0){
-                        strArr[i] = '1'
+                        strArr[i] = '0'
                     }
                     if (parseInt(strArr[i]) > this.verticalCells){
                         strArr[i] = this.verticalCells + ""
                     }
+                    this.incrementFromInput(i, parseInt(strArr[i]))
                 }
                 this.array = strArr.join(",")
                 
@@ -402,7 +402,7 @@ var vm = new Vue({
             for (let i = 0; i < this.arr.length; i++){
                 this.arr[i] = 0
                 this.posArr[i] = i
-                this.incrementFromInput(i, Math.floor(Math.random() * (this.verticalCells - 1) + 1))
+                this.incrementFromInput(i, Math.floor(Math.random() * (this.verticalCells)))
             }
             this.array = this.arr.join(",")
         }
