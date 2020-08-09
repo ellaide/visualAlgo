@@ -224,7 +224,7 @@ var vm = new Vue({
                     this.posArr[i] = i
                     this.incrementFromInput(i, parseInt(strArr[i]))
                     if (parseInt(strArr[i]) < 0){
-                        strArr[i] = '0'
+                        strArr[i] = '1'
                     }
                     if (parseInt(strArr[i]) > this.verticalCells){
                         strArr[i] = this.verticalCells + ""
@@ -329,11 +329,19 @@ var vm = new Vue({
                 function actionLoop(i){
                     setTimeout(() => {
                         if (i < step.length){
-                            let val1 = that.posArr[step[i][0]]
-                            let val2 = that.posArr[step[i][1]]
-                            that.moving = val2
-                            that.swap(step[i][0], val2)
-                            that.swap(step[i][1], val1)
+                            if (step[i].length > 1){
+                                let val1 = that.posArr[step[i][0]]
+                                let val2 = that.posArr[step[i][1]]
+                                
+                                that.moving = val2
+                                that.comparing = val1
+                                that.swap(step[i][0], val2)
+                                that.swap(step[i][1], val1)
+                            }
+                            else{
+                                that.comparing = that.posArr[step[i][0]]
+                                
+                            }
                             actionLoop(i+1)
                             x++
                         }else{
@@ -345,19 +353,21 @@ var vm = new Vue({
             }
             async function ultimate(){
                 for (let i = 0; i < steps.length; i++){
-                    await new Promise(resolve => action(resolve, steps[i]))
+                    await new Promise(resolve => action(resolve, steps[i])).then(() => {
+                        that.moving = -1
+                        that.pivot = -1
+                        that.comparing = -1
+                    })
                 }
             }
 
             ultimate().then(() =>{
                 that.done = true
-                that.moving = -1
-                that.pivot = -1
             })
 
         },
         incrementFromInput: function(pos, val){
-            if (val < 0 || isNaN(val)) val = 0
+            if (val < 0 || isNaN(val)) val = 1
             if (val > this.verticalCells) val = this.verticalCells
             this.arr[pos] += val
         },
@@ -385,7 +395,7 @@ var vm = new Vue({
             for (let i = 0; i < this.arr.length; i++){
                 this.arr[i] = 0
                 this.posArr[i] = i
-                this.incrementFromInput(i, Math.floor(Math.random() * this.verticalCells))
+                this.incrementFromInput(i, Math.floor(Math.random() * (this.verticalCells - 1) + 1))
             }
             this.array = this.arr.join(",")
         }
