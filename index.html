@@ -32,7 +32,9 @@
                 v-bind:hcells="horizontalCells"
                 v-bind:vcells="verticalCells"
                 v-bind:disappear="disappear"
+                v-bind:size="cellSize"
                 v-on:color-change="incArray"
+
                 :ref="'cell-'+n"
             ></cell-component>
 
@@ -47,6 +49,7 @@
                 v-bind:hcells="horizontalCells"
                 v-bind:moving="moving"
                 v-bind:pivot="pivot"
+                v-bind:size="cellSize"
                 :comparing="comparing"
                 :done="done"
                 :ref="'col-' + n"

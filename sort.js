@@ -4,9 +4,9 @@ var Color = net.brehaut.Color
 
 
 Vue.component("cell-component", {
-    props: ['position', 'dragging', 'x', 'y', 'hcells', 'vcells', 'disappear','columncolor'],
+    props: ['position', 'dragging', 'x', 'y', 'hcells', 'vcells', 'disappear','columncolor', 'size'],
     data: function(){
-        return {color : null, tweenedColor: {
+        return {width: window.innerWidth, color : null, tweenedColor: {
             red: 0,
             green: 0,
             blue: 0,
@@ -15,7 +15,7 @@ Vue.component("cell-component", {
     },
     computed: {
         cellSize: function(){
-            return window.innerWidth / this.hcells;
+            return this.size;
         },
         posX: function(){
             return this.cellSize * ( this.position % this.hcells )
@@ -85,7 +85,7 @@ Vue.component("cell-component", {
 
 
 Vue.component("column-component", {
-    props: ['height', 'colnum','vcells', 'hcells', 'moving', 'done', 'pivot', 'comparing'],
+    props: ['height', 'colnum','vcells', 'hcells', 'moving', 'done', 'pivot', 'comparing', 'size'],
     data: function(){
         return {color: null, iscolcaller: true, tweenedColor: {red:1, green: 1, blue: 1, alpha: 1}, signal: false}
     },
@@ -125,7 +125,7 @@ Vue.component("column-component", {
     template: `
     <div>
     <transition-group name="go">
-    <cell-component  v-for="n in height" :key="n * height + 10000" :position="startPos-(n-1)*inc" dragging="false" x="-1" y="-1" :hcells="hcells" :vcells="vcells" disappear="false" :columncolor="!done ? (moving===colnum ? 'red' : (pivot===colnum ? 'orange' : (comparing===colnum ? 'blue' : color))) : color">
+    <cell-component  v-for="n in height" :key="n * height + 10000" :position="startPos-(n-1)*inc" dragging="false" x="-1" y="-1" :hcells="hcells" :size="size" :vcells="vcells" disappear="false" :columncolor="!done ? (moving===colnum ? 'red' : (pivot===colnum ? 'orange' : (comparing===colnum ? 'blue' : color))) : color">
     </cell-component>
     </transition-group>
     </div>
@@ -158,17 +158,19 @@ var vm = new Vue({
         moreThanOnce: false,
         pivot: -1,
         comparing: -1,
-        isSomethingDrawn: false
+        isSomethingDrawn: false,
+        width: window.innerWidth,
+        height: window.innerHeight
     },
     computed: {
         cellSize: function(){
-            return window.innerWidth / this.horizontalCells;
+            return this.width / this.horizontalCells;
         },
         horizontalCells: function(){
             return 15
         },
         verticalCells: function(){
-            return Math.floor(window.innerHeight * this.horizontalCells / window.innerWidth)
+            return Math.floor(this.height * this.horizontalCells / this.width)
         },
         arr: function(){
             return new Array(this.horizontalCells).fill(0)
@@ -184,7 +186,12 @@ var vm = new Vue({
             return Math.floor(2500/this.speed)
         }
     },
+
     methods: {
+        onResize(){
+            this.width = window.innerWidth
+            this.height = window.innerHeight
+        },
         startDrag(event){
             if (!this.done) return
             if (this.moreThanOnce) return
@@ -405,11 +412,22 @@ var vm = new Vue({
             if (val){
                 this.moreThanOnce = true
             }
+        },
+        width: function(val){
+            console.log(val)
         }
     },
     mounted(){
         this.$refs.playground.style.display = "block"
         window.addEventListener('mouseup', this.stopDrag);
+        this.$nextTick(() => {
+            window.addEventListener('resize', this.onResize);
+          })
+    },
+
+
+    beforeDestroy() { 
+      window.removeEventListener('resize', this.onResize); 
     }
 })
 
