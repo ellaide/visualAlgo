@@ -85,9 +85,9 @@ Vue.component("cell-component", {
 
 
 Vue.component("column-component", {
-    props: ['height', 'colnum','vcells', 'hcells', 'moving', 'done', 'pivot', 'comparing', 'size'],
+    props: ['height', 'colnum','vcells', 'hcells', 'moving', 'done', 'pivot', 'comparing', 'size', 'sorted'],
     data: function(){
-        return {color: null, iscolcaller: true, tweenedColor: {red:1, green: 1, blue: 1, alpha: 1}, signal: false}
+        return {color: null, iscolcaller: true, tweenedColor: {red:1, green: 1, blue: 1, alpha: 1}, signal: false, isSorted: false}
     },
     computed: {
         startPos: function(){
@@ -120,12 +120,22 @@ Vue.component("column-component", {
 
         testColor: function() {
             this.color = this.testColor
+        },
+
+        sorted: function(val) {
+            if (this.done){
+                this.isSorted = false
+            }
+            if (val === this.colnum){
+                console.log(this.colnum)
+                this.isSorted = true
+            }
         }
     },
     template: `
     <div>
     <transition-group name="go">
-    <cell-component  v-for="n in height" :key="n * height + 10000" :position="startPos-(n-1)*inc" dragging="false" x="-1" y="-1" :hcells="hcells" :size="size" :vcells="vcells" disappear="false" :columncolor="!done ? (moving===colnum ? 'red' : (pivot===colnum ? 'orange' : (comparing===colnum ? 'blue' : color))) : color">
+    <cell-component  v-for="n in height" :key="n * height + 10000" :position="startPos-(n-1)*inc" dragging="false" x="-1" y="-1" :hcells="hcells" :size="size" :vcells="vcells" disappear="false" :columncolor="!done ? (isSorted ? 'green' : (pivot===colnum ? 'orange' : (moving===colnum ? 'red' : (comparing===colnum ? 'blue' : color)))) : color">
     </cell-component>
     </transition-group>
     </div>
@@ -159,6 +169,7 @@ var vm = new Vue({
         pivot: -1,
         comparing: -1,
         isSomethingDrawn: false,
+        sorted: -1,
         width: window.innerWidth,
         height: window.innerHeight
     },
@@ -177,7 +188,7 @@ var vm = new Vue({
         },
         posArr: function(){
             res = []
-            for (let i = 0; i < 20; i++){
+            for (let i = 0; i < this.horizontalCells; i++){
                 res.push(i)
             }
             return res
@@ -285,7 +296,7 @@ var vm = new Vue({
                         
                     }else{
                         that.moving = -1
-                        that.done = true
+                        setTimeout(() => that.done = true, 1000)
                     } 
                 }, that.sortingSpeedInMs)
             }
@@ -320,7 +331,7 @@ var vm = new Vue({
                     }else{
                         that.comparing = -1
                         that.moving = -1
-                        that.done = true
+                        setTimeout(() => that.done = true, 1000)
                     } 
                 }, 500)
             }
@@ -362,6 +373,7 @@ var vm = new Vue({
                 for (let i = 0; i < steps.length; i++){
                     await new Promise(resolve => action(resolve, steps[i])).then(() => {
                         that.moving = -1
+                        that.sorted = that.posArr[steps[i][steps[i].length - 1][1]]
                         that.pivot = -1
                         that.comparing = -1
                     })
@@ -369,7 +381,7 @@ var vm = new Vue({
             }
 
             ultimate().then(() =>{
-                that.done = true
+                setTimeout(() => that.done = true, 1000)
             })
 
         },

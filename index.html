@@ -52,6 +52,7 @@
                 v-bind:size="cellSize"
                 :comparing="comparing"
                 :done="done"
+                :sorted="sorted"
                 :ref="'col-' + n"
             >
             </column-component>
@@ -111,6 +112,10 @@
                                         <li>
                                             <div style="width: 10px; height: 10px; background-color: orange; display:inline-block"></div>
                                             - pivot (Quick Sort)
+                                        </li>
+                                        <li>
+                                            <div style="width: 10px; height: 10px; background-color: green; display:inline-block"></div>
+                                            - sorted element (Quick Sort, Selection Sort)
                                         </li>
                                     </ul>
                                 </b-form-text>
