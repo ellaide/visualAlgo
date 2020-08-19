@@ -123,12 +123,16 @@ Vue.component("column-component", {
         },
 
         sorted: function(val) {
-            if (this.done){
-                this.isSorted = false
-            }
             if (val === this.colnum){
-                console.log(this.colnum)
+                
                 this.isSorted = true
+            }
+        }
+        ,
+
+        done: function(val){
+            if (val){
+                this.isSorted = false
             }
         }
     },
@@ -324,6 +328,8 @@ var vm = new Vue({
                         helper().then(() => {
                             that.swap(pairs[i][0], val2)
                             that.swap(pairs[i][1], val1)
+                            that.sorted = that.posArr[pairs[i][1]]
+                            
                             littleLoop(i+1)
                         })
                         
@@ -331,6 +337,7 @@ var vm = new Vue({
                     }else{
                         that.comparing = -1
                         that.moving = -1
+                        that.sorted = -1
                         setTimeout(() => that.done = true, 1000)
                     } 
                 }, 500)
@@ -376,6 +383,7 @@ var vm = new Vue({
                         that.sorted = that.posArr[steps[i][steps[i].length - 1][1]]
                         that.pivot = -1
                         that.comparing = -1
+                        console.log(that.sorted)
                     })
                 }
             }
