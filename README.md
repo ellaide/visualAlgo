@@ -1,6 +1,6 @@
 # VisualAlgo
 
-Website with cool visualizations. Sorting, DFS, BFS, and LeetCode problem visualizations.
+Algorithm visualizer
 
 * Front-end framework: **Vue.js**
 
