@@ -1,6 +1,6 @@
 # VisualAlgo
 
-Algorithm visualizer
+<a href="https://algovisualize.netlify.app">Algorithm visualizer</a>
 
 * Front-end framework: **Vue.js**
 
